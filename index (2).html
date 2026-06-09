@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I LOVE MEY ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    background:radial-gradient(circle,#2b0035,#120018,#000);
+    height:100vh;
+    font-family:Arial, sans-serif;
+}
+
+#sun{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ffea00,#ff8c00,#ff4d00);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+    box-shadow:0 0 60px #ffae00;
+    z-index:10;
+    animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        box-shadow:0 0 120px #ffae00;
+    }
+}
+
+.orbit{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+}
+
+.heart{
+    position:absolute;
+    font-size:35px;
+    cursor:pointer;
+    user-select:none;
+    transition:0.3s;
+}
+
+.heart:hover{
+    transform:scale(1.4);
+}
+
+#message{
+    position:absolute;
+    top:10%;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:32px;
+    font-weight:bold;
+    text-shadow:0 0 15px pink;
+    z-index:20;
+}
+
+.floating-heart{
+    position:absolute;
+    color:pink;
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-600px);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="message">💖 Haz clic en los corazones 💖</div>
+
+<div id="sun">
+I LOVE<br>MEY ❤️
+</div>
+
+<div class="orbit" id="orbit"></div>
+
+<script>
+
+const mensajes = [
+"Te amo ❤️",
+"Eres mi universo 🌌",
+"Mi corazón te pertenece 💖",
+"Contigo todo es mejor ✨",
+"Cada día te amo más 💕",
+"Eres mi estrella favorita ⭐",
+"Siempre tú ❤️",
+"Mi lugar favorito es contigo 💞",
+"Tu sonrisa ilumina mi mundo 🌞",
+"Te elegiría mil veces 💘"
+];
+
+const orbit = document.getElementById("orbit");
+
+const hearts = 12;
+const radius = 260;
+
+for(let i=0;i<hearts;i++){
+
+    const heart = document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+
+    const angle=(i/hearts)*Math.PI*2;
+
+    heart.dataset.angle=angle;
+
+    orbit.appendChild(heart);
+
+    heart.addEventListener("click",()=>{
+
+        const texto =
+        mensajes[Math.floor(Math.random()*mensajes.length)];
+
+        document.getElementById("message").innerHTML=texto;
+
+        for(let j=0;j<20;j++){
+            createFloatingHeart();
+        }
+
+    });
+}
+
+function animate(){
+
+    const allHearts=document.querySelectorAll(".heart");
+
+    allHearts.forEach((heart,index)=>{
+
+        let angle=parseFloat(heart.dataset.angle);
+
+        angle+=0.003;
+
+        heart.dataset.angle=angle;
+
+        const x=Math.cos(angle)*radius;
+        const y=Math.sin(angle)*radius;
+
+        heart.style.left=x+"px";
+        heart.style.top=y+"px";
+
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+function createFloatingHeart(){
+
+    const heart=document.createElement("div");
+
+    heart.className="floating-heart";
+    heart.innerHTML="💖";
+
+    heart.style.left=Math.random()*window.innerWidth+"px";
+    heart.style.bottom="0px";
+    heart.style.fontSize=(20+Math.random()*40)+"px";
+
+    heart.style.animationDuration=
+    (3+Math.random()*4)+"s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },7000);
+}
+
+setInterval(()=>{
+    createFloatingHeart();
+},500);
+
+</script>
+
+</body>
+</html>
